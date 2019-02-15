@@ -1,5 +1,6 @@
 package com.example.shaimaaderbaz.orthoclinic.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,7 +65,11 @@ public class SplashActivity extends AppCompatActivity implements SplashView ,Log
 
     @Override
     public void onDataReturned() {
-        HomeActivity.start(this);
+
+
+//        startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+        // test
+        startActivity(new Intent(SplashActivity.this,LoginActivity.class));
         /*LoginPresenterImp presenter =new LoginPresenterImp(this);
         Cursor cursor =presenter.retrieveLoginDataFromDatabase(this);
         if(cursor.getCount()==0)

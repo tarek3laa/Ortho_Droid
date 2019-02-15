@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AddPatientFragmentListener {
+    Intent intent;
 
     @BindView(R.id.fab)
     FloatingActionButton fab;
@@ -35,6 +36,7 @@ public class HomeActivity extends AppCompatActivity
         Intent starter = new Intent(context, HomeActivity.class);
         context.startActivity(starter);
     }
+
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
@@ -46,13 +48,17 @@ public class HomeActivity extends AppCompatActivity
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        replaceFragment(PatientsListFragment.newInstance(),false);
+        replaceFragment(PatientsListFragment.newInstance(), false);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                replaceFragment(AddPatientFragment.newInstance(),false);
+                replaceFragment(AddPatientFragment.newInstance(), false);
             }
         });
+        intent = getIntent();
+        if (intent.getAction() != null)
+            if (intent.getAction().equals(AddSurgeryActivity.ACTION_ADD_PATIENT))
+                replaceFragment(AddPatientFragment.newInstance(), false);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -79,17 +85,20 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.new_surgery:
+                startActivity(new Intent(HomeActivity.this, SurgeriesActivity.class));
+                break;
             case R.id.new_patient:
-                replaceFragment(AddPatientFragment.newInstance(),false);
+                replaceFragment(AddPatientFragment.newInstance(), false);
                 break;
 //            case R.id.nav_gallery:
 //                //TODO: Gallery Fragment
 //                break;
             case R.id.search:
-                replaceFragment(PatientsListFragment.newInstance(),true);
+                replaceFragment(PatientsListFragment.newInstance(), true);
                 break;
             case R.id.contact_us:
-                replaceFragment(ContactUsFragment.newInstance(),true);
+                replaceFragment(ContactUsFragment.newInstance(), true);
                 break;
         }
 
@@ -109,6 +118,10 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onPatientAdded() {
-        replaceFragment(PatientsListFragment.newInstance(),false);
+        if (intent.getAction() != null)
+            if (intent.getAction().equals(AddSurgeryActivity.ACTION_ADD_PATIENT))
+                finish();
+
+        replaceFragment(PatientsListFragment.newInstance(), false);
     }
 }

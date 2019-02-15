@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
  * create an instance of this fragment.
  */
 public class PatientsListFragment extends Fragment implements PatientListView,
-        PatientItemsAdapter.PatientsItemsAdapterListener{
+        PatientItemsAdapter.PatientsItemsAdapterListener {
 
     @BindView(R.id.recyclerViewItemPatient)
     RecyclerView patientsRecyclerview;
@@ -44,7 +44,7 @@ public class PatientsListFragment extends Fragment implements PatientListView,
 
     List<PatientItem> allPatients;
     PatientItemsAdapter patientItemsAdapter;
-    PatientListPresenterImp presenter ;
+    PatientListPresenterImp presenter;
 
     public PatientsListFragment() {
         // Required empty public constructor
@@ -68,8 +68,8 @@ public class PatientsListFragment extends Fragment implements PatientListView,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_patients_list,container,false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_patients_list, container, false);
+        ButterKnife.bind(this, view);
 
         presenter = new PatientListPresenterImp(this);
      /*   try
@@ -82,8 +82,8 @@ public class PatientsListFragment extends Fragment implements PatientListView,
                     presenter.addPatientsFromLocalToServer(patientItems,this.getContext());
                     //after this delete all local or edit local to be server
                 }*/
-                List<PatientItem> allPatient=presenter.retreivePatientsFromServer();
-               // presenter.addPatientsFromServerToLocal(allPatient,this.getContext());
+            List<PatientItem> allPatient = presenter.retreivePatientsFromServer();
+        // presenter.addPatientsFromServerToLocal(allPatient,this.getContext());
            /* }
             else
             {
@@ -99,8 +99,7 @@ public class PatientsListFragment extends Fragment implements PatientListView,
 
         }*/
 
-        searchPatients.addTextChangedListener(new TextWatcher()
-        {
+        searchPatients.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -114,33 +113,32 @@ public class PatientsListFragment extends Fragment implements PatientListView,
             @Override
             public void afterTextChanged(Editable s) {
                 if (allPatients != null)
-                    presenter.filterPatientsResult(s.toString(),allPatients);
+                    presenter.filterPatientsResult(s.toString(), allPatients);
             }
         });
         return view;
     }
 
     @Override
-    public void showPatients(List<PatientItem> allPatientData)
-    {
+    public void showPatients(List<PatientItem> allPatientData) {
         allPatients = allPatientData;
         patientsRecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        patientItemsAdapter = new PatientItemsAdapter(this.getContext(),allPatientData,
+        patientItemsAdapter = new PatientItemsAdapter(this.getContext(), allPatientData,
                 this);
         patientsRecyclerview.setAdapter(patientItemsAdapter);
-        allPatients=allPatientData;
+        allPatients = allPatientData;
 
     }
 
     @Override
     public void showSearchResult(List<PatientItem> filteredPatients) {
         patientsRecyclerview.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        patientItemsAdapter = new PatientItemsAdapter(this.getActivity(),filteredPatients, this);
+        patientItemsAdapter = new PatientItemsAdapter(this.getActivity(), filteredPatients, this);
         patientsRecyclerview.setAdapter(patientItemsAdapter);
     }
 
     @Override
     public void onItemClicked(int id) {
-        PatientProfileActivity.start(getContext(),id);
+        PatientProfileActivity.start(getContext(), id);
     }
 }
